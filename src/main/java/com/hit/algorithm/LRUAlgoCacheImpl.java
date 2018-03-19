@@ -1,49 +1,57 @@
 package com.hit.algorithm;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.*;
 
-public class LRUAlgoCacheImpl <Integer,V> extends AbstractAlgoCache<Integer,V>
+public class LRUAlgoCacheImpl <K,V> extends AbstractAlgoCache<K,V>
 {
     private int numberOfEntries;
-    private int leastentry;
-    private List<V> cacheList;
+    Hashtable<K,V> hashtable;
+    Queue<K> keysQueue;
+
 
     public LRUAlgoCacheImpl(int capacity)
     {
-        cacheList = new ArrayList<>();
         numberOfEntries = 0;
         this.capacity = capacity;
-        leastentry = 0;
+        hashtable = new Hashtable<>();
+        keysQueue = new ArrayDeque<>();
     }
 
 
-    public V getElement(Integer key)
-    {
-        return cacheList.get(key.hashCode());
-    }
-
-    public V putElement(Integer key, V value)
+    public V getElement(K key)
     {
         V v;
-        if(capacity == numberOfEntries)
-        {
-            v = cacheList.get(leastentry);
-            cacheList.set(leastentry,value);
-            return  v;
-        }else
-        {
-            cacheList.add(value);
-            numberOfEntries++;
-        }
+        v= hashtable.get(key);
 
-        return  null;
+        return v;
     }
 
-    public void removeElement(Integer key)
+    public V putElement(K key, V value)
     {
-        cacheList.remove(key.hashCode());
+        V v;
+        if(numberOfEntries == capacity)
+        {
+            K k = keysQueue.poll();
+            v = hashtable.get(k);
+            hashtable.remove(k);
+            keysQueue.add(key);
+            hashtable.put(key, value);
+            return v;
+
+        }else
+        {
+            keysQueue.add(key);
+            hashtable.put(key,value);
+            numberOfEntries++;
+            return null;
+        }
+    }
+
+    public void removeElement(K key)
+    {
+        numberOfEntries--;
+        hashtable.remove(key);
+        keysQueue.remove(key);
     }
 
 }
