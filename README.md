@@ -1,3 +1,3 @@
 # CacheAlgoritm
 
-Cacheing Algoritm in java course in HiT
+Caching Algorithm in java course in HiT
