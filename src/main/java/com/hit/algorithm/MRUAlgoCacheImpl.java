@@ -42,6 +42,7 @@ public class MRUAlgoCacheImpl <K,V> extends AbstractAlgoCache<K,V>
             {
 
                 secondStack.push(key);
+                ;
                 hashTable.put(key, value);
                 removingFirstStack = true;
                 k = firstStack.pop();
@@ -99,8 +100,5 @@ public class MRUAlgoCacheImpl <K,V> extends AbstractAlgoCache<K,V>
 
     }
 
-    private void removeFromStack(Stack<K> stack,K key)
-    {
 
-    }
 }

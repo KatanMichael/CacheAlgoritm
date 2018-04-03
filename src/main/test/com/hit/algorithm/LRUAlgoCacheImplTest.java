@@ -8,10 +8,6 @@ class LRUAlgoCacheImplTest
     @org.junit.jupiter.api.Test
     void getElement()
     {
-        Person p = new Person();
-        LRUAlgoCacheImpl<Integer,Person> lru = new LRUAlgoCacheImpl<>(5);
-
-
 
     }
 
@@ -45,8 +41,6 @@ class LRUAlgoCacheImplTest
         assertEquals(8,myInt.hashCode());
 
 
-
-
     }
 
     @org.junit.jupiter.api.Test
@@ -54,19 +48,5 @@ class LRUAlgoCacheImplTest
     {
 
     }
-}
 
-class Person
-{
-    int age;
-    String name;
-    public Person(int age,String name)
-    {this.age = age;this.name = name;}
-    public Person(){}
-
-    @Override
-    public String toString()
-    {
-        return (name+": "+age);
-    }
 }
