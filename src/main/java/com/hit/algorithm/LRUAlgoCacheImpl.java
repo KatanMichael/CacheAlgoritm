@@ -30,6 +30,11 @@ public class LRUAlgoCacheImpl <K,V> extends AbstractAlgoCache<K,V>
     public V putElement(K key, V value)
     {
         V v;
+
+        if (hashTable.contains(key)) {
+            return null;
+        }
+
         if(numberOfEntries == capacity)
         {
             K k = keysQueue.poll();

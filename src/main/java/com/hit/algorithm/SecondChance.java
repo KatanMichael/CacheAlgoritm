@@ -30,6 +30,7 @@ public class SecondChance <K,V> extends AbstractAlgoCache<K,V>
 
     public V putElement(K key, V value) {
         V v = hashTable.get(key);
+
         if (v != null) {
             if (v == value) {
                 if (!secondChanceKeys.contains(key)) {
