@@ -5,15 +5,16 @@ import java.util.*;
 public class LRUAlgoCacheImpl <K,V> extends AbstractAlgoCache<K,V>
 {
     private int numberOfEntries;
-    Hashtable<K,V> hashtable;
+    Hashtable<K, V> hashTable;
     Queue<K> keysQueue;
 
 
     public LRUAlgoCacheImpl(int capacity)
     {
+        super(capacity);
         numberOfEntries = 0;
         this.capacity = capacity;
-        hashtable = new Hashtable<>();
+        hashTable = new Hashtable<>();
         keysQueue = new ArrayDeque<>();
     }
 
@@ -21,7 +22,7 @@ public class LRUAlgoCacheImpl <K,V> extends AbstractAlgoCache<K,V>
     public V getElement(K key)
     {
         V v;
-        v= hashtable.get(key);
+        v = hashTable.get(key);
 
         return v;
     }
@@ -32,16 +33,16 @@ public class LRUAlgoCacheImpl <K,V> extends AbstractAlgoCache<K,V>
         if(numberOfEntries == capacity)
         {
             K k = keysQueue.poll();
-            v = hashtable.get(k);
-            hashtable.remove(k);
+            v = hashTable.get(k);
+            hashTable.remove(k);
             keysQueue.add(key);
-            hashtable.put(key, value);
+            hashTable.put(key, value);
             return v;
 
         }else
         {
             keysQueue.add(key);
-            hashtable.put(key,value);
+            hashTable.put(key, value);
             numberOfEntries++;
             return null;
         }
@@ -50,7 +51,7 @@ public class LRUAlgoCacheImpl <K,V> extends AbstractAlgoCache<K,V>
     public void removeElement(K key)
     {
         numberOfEntries--;
-        hashtable.remove(key);
+        hashTable.remove(key);
         keysQueue.remove(key);
     }
 

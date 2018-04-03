@@ -5,24 +5,25 @@ import java.util.Stack;
 
 public class MRUAlgoCacheImpl <K,V> extends AbstractAlgoCache<K,V>
 {
-    private Hashtable<K,V> hashtable;
+    private Hashtable<K, V> hashTable;
     private Stack<K> firstStack;
     private Stack<K> secondStack;
     private boolean removingFirstStack;
 
     public MRUAlgoCacheImpl(int capacity)
     {
+        super(capacity);
         this.capacity = capacity;
         firstStack = new Stack<>();
         secondStack = new Stack<>();
-        hashtable = new Hashtable<>();
+        hashTable = new Hashtable<>();
         removingFirstStack = true;
     }
 
     public V getElement(K key)
     {
         V v;
-        v = hashtable.get(key);
+        v = hashTable.get(key);
 
         return v;
     }
@@ -41,34 +42,34 @@ public class MRUAlgoCacheImpl <K,V> extends AbstractAlgoCache<K,V>
             {
 
                 secondStack.push(key);
-                hashtable.put(key,value);
+                hashTable.put(key, value);
                 removingFirstStack = true;
                 k = firstStack.pop();
-                v = hashtable.get(k);
+                v = hashTable.get(k);
             }else
             if(secondStack.size() == capacity)
             {
                 firstStack.push(key);
-                hashtable.put(key,value);
+                hashTable.put(key, value);
                 removingFirstStack = false;
                 k = secondStack.pop();
-                v = hashtable.get(k);
+                v = hashTable.get(k);
             }else
             {
                 if(removingFirstStack)
                 {
                     secondStack.push(key);
-                    hashtable.put(key,value);
+                    hashTable.put(key, value);
                     removingFirstStack = true;
                     k = firstStack.pop();
-                    v = hashtable.get(k);
+                    v = hashTable.get(k);
                 }else
                 {
                     firstStack.push(key);
-                    hashtable.put(key,value);
+                    hashTable.put(key, value);
                     removingFirstStack = false;
                     k = secondStack.pop();
-                    v = hashtable.get(k);
+                    v = hashTable.get(k);
 
                 }
             }
@@ -79,7 +80,7 @@ public class MRUAlgoCacheImpl <K,V> extends AbstractAlgoCache<K,V>
 
         }else
         {
-            hashtable.put(key,value);
+            hashTable.put(key, value);
             firstStack.add(key);
         }
 
@@ -94,7 +95,7 @@ public class MRUAlgoCacheImpl <K,V> extends AbstractAlgoCache<K,V>
         {
             secondStack.removeElement(key);
         }
-        hashtable.remove(key);
+        hashTable.remove(key);
 
     }
 

@@ -39,7 +39,10 @@ class SecondChanceTest {
         assertEquals(3, myInt.hashCode());
 
         myInt = secondChance.putElement(5, 5);
-        assertEquals(null, myInt);
+        assertEquals(1, myInt.hashCode());
+
+        myInt = secondChance.putElement(6, 6);
+        assertEquals(4, myInt.hashCode());
 
 
     }

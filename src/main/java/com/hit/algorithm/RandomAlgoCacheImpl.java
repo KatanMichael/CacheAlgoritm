@@ -6,14 +6,15 @@ import java.util.List;
 
 public class RandomAlgoCacheImpl <K,V> extends AbstractAlgoCache<K,V>
 {
-    private Hashtable<K,V> hashtable;
+    private Hashtable<K, V> hashTable;
     private List<K> listOfKeys;
     private int numberOfEntries;
 
     public RandomAlgoCacheImpl(int capacity)
     {
+        super(capacity);
         numberOfEntries = 0;
-        hashtable = new Hashtable<>();
+        hashTable = new Hashtable<>();
         this.capacity = capacity;
         listOfKeys = new ArrayList<>();
     }
@@ -21,7 +22,7 @@ public class RandomAlgoCacheImpl <K,V> extends AbstractAlgoCache<K,V>
     public V getElement(K key)
     {
         V v;
-        v = hashtable.get(key);
+        v = hashTable.get(key);
 
         return v;
     }
@@ -35,17 +36,17 @@ public class RandomAlgoCacheImpl <K,V> extends AbstractAlgoCache<K,V>
             K tempKey;
 
             tempKey = listOfKeys.get(randomNum);
-            v = hashtable.get(tempKey);
+            v = hashTable.get(tempKey);
             listOfKeys.remove(tempKey);
-            hashtable.remove(key);
+            hashTable.remove(key);
 
-            hashtable.put(key,value);
+            hashTable.put(key, value);
             listOfKeys.add(key);
 
         }else
         {
             numberOfEntries++;
-            hashtable.put(key,value);
+            hashTable.put(key, value);
             listOfKeys.add(key);
         }
 
@@ -59,7 +60,7 @@ public class RandomAlgoCacheImpl <K,V> extends AbstractAlgoCache<K,V>
             numberOfEntries--;
         }
 
-        hashtable.remove(key);
+        hashTable.remove(key);
         listOfKeys.remove(key);
 
     }
