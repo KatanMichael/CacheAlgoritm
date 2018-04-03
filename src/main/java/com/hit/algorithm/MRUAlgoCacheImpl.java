@@ -1,102 +1,95 @@
 package com.hit.algorithm;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Stack;
+import java.util.List;
 
-public class MRUAlgoCacheImpl <K,V> extends AbstractAlgoCache<K,V>
-{
+public class MRUAlgoCacheImpl<K, V> extends AbstractAlgoCache<K, V> {
     private Hashtable<K, V> hashTable;
-    private Stack<K> firstStack;
-    private Stack<K> secondStack;
-    private boolean removingFirstStack;
+    private List<K> listOfKeys;
+    private int numberOfEntries;
+    private int removePos;
+    private boolean firstTimeRemove;
+    private boolean goingBack;
 
-    public MRUAlgoCacheImpl(int capacity)
-    {
+
+    public MRUAlgoCacheImpl(int capacity) {
         super(capacity);
-        this.capacity = capacity;
-        firstStack = new Stack<>();
-        secondStack = new Stack<>();
+        listOfKeys = new ArrayList<>();
         hashTable = new Hashtable<>();
-        removingFirstStack = true;
+        numberOfEntries = 0;
+        removePos = capacity - 1;
+        firstTimeRemove = true;
+        goingBack = true;
     }
 
-    public V getElement(K key)
-    {
+    public V getElement(K key) {
         V v;
         v = hashTable.get(key);
 
         return v;
     }
 
-    public V putElement(K key, V value)
-    {
-        V v;
-        v = null;
-        K k;
+    public V putElement(K key, V value) {
+        V v = null;
 
-        int totalStacksSize = firstStack.size() + secondStack.size();
+        if (hashTable.contains(key)) {
+            return v;
+        }
 
-        if(totalStacksSize == capacity)
+
+        if (numberOfEntries == capacity)
         {
-            if(firstStack.size() == capacity)
-            {
 
-                secondStack.push(key);
-                ;
+            if (removePos == 0) {
+                goingBack = false;
+                K tempKey;
+                tempKey = listOfKeys.get(removePos);
+                listOfKeys.remove(tempKey);
+                v = hashTable.get(tempKey);
+                hashTable.remove(tempKey);
                 hashTable.put(key, value);
-                removingFirstStack = true;
-                k = firstStack.pop();
-                v = hashTable.get(k);
-            }else
-            if(secondStack.size() == capacity)
-            {
-                firstStack.push(key);
-                hashTable.put(key, value);
-                removingFirstStack = false;
-                k = secondStack.pop();
-                v = hashTable.get(k);
-            }else
-            {
-                if(removingFirstStack)
-                {
-                    secondStack.push(key);
-                    hashTable.put(key, value);
-                    removingFirstStack = true;
-                    k = firstStack.pop();
-                    v = hashTable.get(k);
-                }else
-                {
-                    firstStack.push(key);
-                    hashTable.put(key, value);
-                    removingFirstStack = false;
-                    k = secondStack.pop();
-                    v = hashTable.get(k);
+                listOfKeys.add(removePos, key);
+                removePos++;
+                return v;
 
-                }
+
+            }
+            if (removePos == capacity - 1) {
+                goingBack = true;
             }
 
-            //TODO Fix duplicated code segment
-
-
-
-        }else
-        {
+            K tempKey;
+            tempKey = listOfKeys.get(removePos);
+            listOfKeys.remove(tempKey);
+            v = hashTable.get(tempKey);
+            hashTable.remove(tempKey);
             hashTable.put(key, value);
-            firstStack.add(key);
-        }
+            listOfKeys.add(removePos, key);
 
+            if (goingBack) {
+                removePos--;
+            } else {
+                removePos++;
+            }
+
+            return v;
+
+        } else {
+            hashTable.put(key, value);
+            listOfKeys.add(key);
+            numberOfEntries++;
+            removePos = listOfKeys.indexOf(key);
+        }
 
         return v;
+
     }
 
-    public void removeElement(K key)
-    {
-
-        if(!firstStack.removeElement(key))
-        {
-            secondStack.removeElement(key);
-        }
+    public void removeElement(K key) {
         hashTable.remove(key);
+        listOfKeys.remove(key);
+        numberOfEntries--;
 
     }
 

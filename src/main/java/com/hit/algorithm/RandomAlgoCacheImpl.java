@@ -30,6 +30,11 @@ public class RandomAlgoCacheImpl <K,V> extends AbstractAlgoCache<K,V>
     public V putElement(K key, V value)
     {
         V v = null;
+
+        if (hashTable.contains(key)) {
+            return null;
+        }
+
         if(numberOfEntries == capacity)
         {
             int randomNum = (int)(Math.random()*(capacity*10))%capacity;
